@@ -1,6 +1,16 @@
 import '@radix-ui/themes/styles.css';
 import React from "react";
-import {TableBody, TableCell, TableColumnHeaderCell, TableHeader, TableRoot, TableRow} from "@radix-ui/themes";
+import {
+    Button,
+    Flex,
+    TableBody,
+    TableCell,
+    TableColumnHeaderCell,
+    TableHeader,
+    TableRoot,
+    TableRow
+} from "@radix-ui/themes";
+import {EyeOpenIcon, Pencil2Icon, TrashIcon} from "@radix-ui/react-icons";
 
 
 type tableRootPropTypes = React.ComponentProps<typeof TableRoot>;
@@ -17,6 +27,7 @@ interface TableProps {
     tableColumnHeaderCellProps?: tableColumnHeaderCellPropTypes;
     tableHeaderKey?: string[];
     tableBodyData?: object[];
+    isRoute?: boolean;
 
 }
 
@@ -27,7 +38,8 @@ const Table: React.FC<TableProps> = ({
                                          tableCellProps,
                                          tableColumnHeaderCellProps,
                                          tableHeaderKey,
-                                         tableBodyData
+                                         tableBodyData,
+                                         isRoute = false
                                      }) => {
     console.log(tableRootProps)
     return (
@@ -37,20 +49,32 @@ const Table: React.FC<TableProps> = ({
                     {tableHeaderKey?.map((key, index) => (
                         <TableColumnHeaderCell key={index} {...tableColumnHeaderCellProps}>{key}</TableColumnHeaderCell>
                     ))}
+                    <TableColumnHeaderCell  {...tableColumnHeaderCellProps}>Control</TableColumnHeaderCell>
+
                 </TableRow>
             </TableHeader>
 
             <TableBody>
                 {tableBodyData?.map((data, index) => (
                     <TableRow key={index} {...tableBodyRowProps}>
-                        {Object.values(data).map((value, index) =>
-                            {
-                                if(typeof value === "object"){
-                                    return <TableCell key={index} {...tableCellProps}>{value[Object.keys(value)[0]]}</TableCell>
-                                }
-                                return  <TableCell key={index} {...tableCellProps}>{value}</TableCell>
+                        {Object.values(data).map((value, index,) => {
+
+                                return <TableCell key={index} {...tableCellProps}>{value}</TableCell>
                             }
                         )}
+                        <TableCell  {...tableCellProps}>
+                            <Flex gap="2">
+                                <Button>
+                                    <Pencil2Icon width={15} height={15}/>
+                                </Button>
+                                <Button>
+                                    <TrashIcon width={15} height={15}/>
+                                </Button>
+                                {isRoute && <Button>
+                                    <EyeOpenIcon width={15} height={15}/>
+                                </Button>}
+                            </Flex>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>

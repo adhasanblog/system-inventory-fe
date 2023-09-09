@@ -9,15 +9,22 @@ interface InputProps {
     rootProps?: rootPropsType;
     slotProps?: slotPropsType;
     inputProps?: inputPropsType;
+    inputIcon?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({rootProps, slotProps, inputProps}) => {
+const Input: React.FC<InputProps> = ({rootProps, slotProps, inputProps, inputIcon=false}) => {
     return (
-        <TextField.Root {...rootProps}>
-            <TextField.Slot {...slotProps}>
-                <TextField.Input {...inputProps} />
-            </TextField.Slot>
-        </TextField.Root>
+
+        <>
+            {!inputIcon ? <TextField.Input {...inputProps} /> : (
+            <TextField.Root {...rootProps}>
+                <TextField.Slot {...slotProps}>
+                    <TextField.Input {...inputProps} />
+                </TextField.Slot>
+            </TextField.Root>
+            )}
+
+        </>
     )
 }
 
